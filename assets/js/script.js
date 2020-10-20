@@ -3,9 +3,11 @@ var tasks = {};
 var createTask = function(taskText, taskDate, taskList) {
   // create elements that make up a task item
   var taskLi = $("<li>").addClass("list-group-item");
+
   var taskSpan = $("<span>")
     .addClass("badge badge-primary badge-pill")
     .text(taskDate);
+
   var taskP = $("<p>")
     .addClass("m-1")
     .text(taskText);
@@ -44,6 +46,49 @@ var loadTasks = function() {
 var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
+
+$(".list-group").on("click", "p", function() {
+  var text = $(this)   // or var text = $(this).text().trim();
+  .text()
+  .trim();
+  var textInput = $("<textarea>")
+  .addClass("form-control")
+  .val(text);
+  // make the text box appear on the page
+  $(this).replaceWith(textInput);
+  // highlight the event
+  textInput.trigger("focus");
+});
+
+// text area revert back when out of focus
+$(".list-group").on("blur", "textarea", function() {
+  // get the textarea's current value/text
+  var text = $(this)
+    .val()
+    .trim();
+
+  // get the parent ul's id attribute
+  var status = $(this)
+    .closest(".list-group")
+    .attr("id")
+    .replace("list-", "");
+
+  // get the task's position in the list of other li elements
+  var index = $(this)
+    .closest(".list-group-item")
+    .index();
+
+    tasks[status][index].text = text;  // returns the text property (.text) of the object as the given index ([index]) in the array (task[status] - returns the array) (tasks is the object)
+    saveTasks();
+
+    // recreate the p element instead of text box
+    var taskP = $("<p>")
+      .addClass("m-1")
+      .text(text);
+
+    // replace textarea with p element
+    $(this).replaceWith(taskP);
+});
 
 
 
