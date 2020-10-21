@@ -259,14 +259,11 @@ $("#trash").droppable({
   accept: ".card .list-group-item",
   tolerance: "touch",
   drop: function(event, ui) {
-    console.log("drop");
     ui.draggable.remove();
   },
   over: function(event, ui) {
-    console.log("over");
   },
   out: function(event, ui) {
-    console.log("out");
   }
 });
 
@@ -291,6 +288,12 @@ var auditTask = function(taskEl) {
     $(taskEl).addClass("list-group-item-warning");
   }
 };
+
+setInterval(function() {
+  $(".card .list-group-item").each(function(index, el) {
+    auditTask(el);
+  });
+}, (1000 * 60) * 30); // thirty minutes
 
 // load tasks for the first time
 loadTasks();
