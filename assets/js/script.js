@@ -229,8 +229,6 @@ $(".card .list-group").sortable({
       });
     });
 
-    console.log(tempArr);
-
     // trim down list's ID to match object property
     var arrName = $(this)
       .attr("id")
@@ -239,6 +237,22 @@ $(".card .list-group").sortable({
     // update array on tasks object and save
     tasks[arrName] = tempArr;
     saveTasks();
+  }
+});
+
+// droppable trash bar
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  tolerance: "touch",
+  drop: function(event, ui) {
+    console.log("drop");
+    ui.draggable.remove();
+  },
+  over: function(event, ui) {
+    console.log("over");
+  },
+  out: function(event, ui) {
+    console.log("out");
   }
 });
 
